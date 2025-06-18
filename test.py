@@ -8,6 +8,7 @@ import seaborn as sns
 
 
 def run_test(epoch=-1):
+    
     print('Running Test')
     opt = TestOptions().parse()
     opt.serial_batches = True  # no shuffle
@@ -49,7 +50,7 @@ def run_test(epoch=-1):
     plt.ylabel('True')
     plt.title('Confusion Matrix')
     # Save the plot
-    plt.savefig('confusion_matrix.png')
+    plt.savefig(f'confusion_matrix_{opt.name}.png')
     plt.close()
     
     return writer.acc
