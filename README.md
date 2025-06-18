@@ -1,7 +1,7 @@
 <img src='docs/imgs/alien.gif' align="right" width=325>
 <br><br><br>
 This is a replica of the official repo with some modifications to support current project enviorments. this repo is adopted as a tutorial for 3D vision summer school.
-Given below is the original readme file which can be followed with a differnet of having a requirement.txt instead of a conda env
+Given below is the original readme file which can be followed with one difference of having a requirement.txt instead of a conda env
 
 
 # MeshCNN in PyTorch
