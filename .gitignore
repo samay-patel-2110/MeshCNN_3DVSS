@@ -2,5 +2,4 @@
 ./checkpoints
 ./datasets
 *.pdf
-*.txt
 *.png
