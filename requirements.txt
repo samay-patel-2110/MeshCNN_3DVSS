@@ -1,8 +1,9 @@
 # requirements.txt
-torch==2.0.1
-torchvision
-trimesh
 numpy == 1.26.0
+torch==2.0.1 
+torchvision==0.15.2 
+torchaudio==2.0.2
+trimesh
 scipy
 matplotlib
 tensorboard
