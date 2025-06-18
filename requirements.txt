@@ -5,7 +5,7 @@ torchvision==0.15.2
 torchaudio==2.0.2
 trimesh
 scipy
-matplotlib
+matplotlib == 1.2
 tensorboard
 tensorboardX
 seaborn

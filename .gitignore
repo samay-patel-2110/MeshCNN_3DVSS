@@ -1,5 +1,9 @@
 *.obj
 ./checkpoints
-./datasets
+./datasets/human_seg
 *.pdf
 *.png
+
+*.ipynb
+*.eseg
+*.seseg
