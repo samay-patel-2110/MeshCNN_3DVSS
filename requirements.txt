@@ -1,11 +1,11 @@
 # requirements.txt
-numpy == 1.26.4
+numpy ==2.0.2
 torch==2.0.1 
 torchvision==0.15.2 
 torchaudio==2.0.2
 trimesh
 scipy
-matplotlib == 3.8
+matplotlib == 3.7
 tensorboard
 tensorboardX
 seaborn
