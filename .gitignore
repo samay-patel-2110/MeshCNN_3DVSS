@@ -1,6 +1,8 @@
 *.obj
-./checkpoints/*
-./datasets/human_seg/*
+./checkpoints/shrec16/*.txt
+./checkpoints/human_seg/*.txt
+./datasets/human_seg/*.txt
+./datasets/shrec16/*.txt
 *.pdf
 *.png
 
@@ -10,7 +12,7 @@
 *.npz
 *.pth
 *.p
-
+*.pyc
 .DS_Store
 
 
