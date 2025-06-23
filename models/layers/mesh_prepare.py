@@ -450,6 +450,10 @@ def extract_features(mesh):
 def dihedral_angle(mesh, edge_points):
     normals_a = get_normals(mesh, edge_points, 0)
     normals_b = get_normals(mesh, edge_points, 3)
+    
+    # normals_a = normals_a/(np.linalg.norm(normals_a,axis=-1,keepdims=True)+1e-7)
+    # normals_b = normals_b/(np.linalg.norm(normals_b,axis=-1,keepdims=True)+1e-7)
+    # dot = np.sum(normals_a * normals_b, axis=1)
     dot = np.sum(normals_a * normals_b, axis=1).clip(-1, 1)
     angles = np.expand_dims(np.pi - np.arccos(dot), axis=0)
     return angles
@@ -465,7 +469,6 @@ def symmetric_opposite_angles(mesh, edge_points):
     angles = np.concatenate((np.expand_dims(angles_a, 0), np.expand_dims(angles_b, 0)), axis=0)
     angles = np.sort(angles, axis=0)
     return angles
-
 
 def symmetric_ratios(mesh, edge_points):
     """ computes two ratios: one for each face shared between the edge
@@ -524,7 +527,7 @@ def get_normals(mesh, edge_points, side):
     edge_a = mesh.vs[edge_points[:, side // 2 + 2]] - mesh.vs[edge_points[:, side // 2]]
     edge_b = mesh.vs[edge_points[:, 1 - side // 2]] - mesh.vs[edge_points[:, side // 2]]
     normals = np.cross(edge_a, edge_b)
-    div = fixed_division(np.linalg.norm(normals, ord=2, axis=1), epsilon=0.1)
+    div = fixed_division(np.linalg.norm(normals, ord=2, axis=1), epsilon=1e-12)
     normals /= div[:, np.newaxis]
     return normals
 
@@ -532,8 +535,8 @@ def get_opposite_angles(mesh, edge_points, side):
     edges_a = mesh.vs[edge_points[:, side // 2]] - mesh.vs[edge_points[:, side // 2 + 2]]
     edges_b = mesh.vs[edge_points[:, 1 - side // 2]] - mesh.vs[edge_points[:, side // 2 + 2]]
 
-    edges_a /= fixed_division(np.linalg.norm(edges_a, ord=2, axis=1), epsilon=0.1)[:, np.newaxis]
-    edges_b /= fixed_division(np.linalg.norm(edges_b, ord=2, axis=1), epsilon=0.1)[:, np.newaxis]
+    edges_a /= fixed_division(np.linalg.norm(edges_a, ord=2, axis=1), epsilon=1e-12)[:, np.newaxis]
+    edges_b /= fixed_division(np.linalg.norm(edges_b, ord=2, axis=1), epsilon=1e-12)[:, np.newaxis]
     dot = np.sum(edges_a * edges_b, axis=1).clip(-1, 1)
     return np.arccos(dot)
 
@@ -546,7 +549,7 @@ def get_ratios(mesh, edge_points, side):
     point_b = mesh.vs[edge_points[:, 1 - side // 2]]
     line_ab = point_b - point_a
     projection_length = np.sum(line_ab * (point_o - point_a), axis=1) / fixed_division(
-        np.linalg.norm(line_ab, ord=2, axis=1), epsilon=0.1)
+        np.linalg.norm(line_ab, ord=2, axis=1), epsilon=1e-12)
     closest_point = point_a + (projection_length / edges_lengths)[:, np.newaxis] * line_ab
     d = np.linalg.norm(point_o - closest_point, ord=2, axis=1)
     return d / edges_lengths
