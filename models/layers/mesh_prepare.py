@@ -524,6 +524,8 @@ def get_side_points(mesh, edge_id):
 
 eps = 1e-12
 
+
+
 def get_normals(mesh, edge_points, side):
     edge_a = mesh.vs[edge_points[:, side // 2 + 2]] - mesh.vs[edge_points[:, side // 2]]
     edge_b = mesh.vs[edge_points[:, 1 - side // 2]] - mesh.vs[edge_points[:, side // 2]]
