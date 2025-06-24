@@ -9,6 +9,7 @@
 *.ipynb
 *.eseg
 *.seseg
+*.txt
 *.npz
 *.pth
 *.p
