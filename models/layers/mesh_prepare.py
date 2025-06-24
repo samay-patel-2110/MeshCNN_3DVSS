@@ -522,12 +522,13 @@ def get_side_points(mesh, edge_id):
         third_vertex = 1
     return [edge_a[first_vertex], edge_a[1 - first_vertex], edge_b[second_vertex], edge_d[third_vertex]]
 
+eps = 1e-12
 
 def get_normals(mesh, edge_points, side):
     edge_a = mesh.vs[edge_points[:, side // 2 + 2]] - mesh.vs[edge_points[:, side // 2]]
     edge_b = mesh.vs[edge_points[:, 1 - side // 2]] - mesh.vs[edge_points[:, side // 2]]
     normals = np.cross(edge_a, edge_b)
-    div = fixed_division(np.linalg.norm(normals, ord=2, axis=1), epsilon=1e-12)
+    div = fixed_division(np.linalg.norm(normals, ord=2, axis=1), epsilon=eps)
     normals /= div[:, np.newaxis]
     return normals
 
@@ -535,8 +536,8 @@ def get_opposite_angles(mesh, edge_points, side):
     edges_a = mesh.vs[edge_points[:, side // 2]] - mesh.vs[edge_points[:, side // 2 + 2]]
     edges_b = mesh.vs[edge_points[:, 1 - side // 2]] - mesh.vs[edge_points[:, side // 2 + 2]]
 
-    edges_a /= fixed_division(np.linalg.norm(edges_a, ord=2, axis=1), epsilon=1e-12)[:, np.newaxis]
-    edges_b /= fixed_division(np.linalg.norm(edges_b, ord=2, axis=1), epsilon=1e-12)[:, np.newaxis]
+    edges_a /= fixed_division(np.linalg.norm(edges_a, ord=2, axis=1), epsilon=eps)[:, np.newaxis]
+    edges_b /= fixed_division(np.linalg.norm(edges_b, ord=2, axis=1), epsilon=eps)[:, np.newaxis]
     dot = np.sum(edges_a * edges_b, axis=1).clip(-1, 1)
     return np.arccos(dot)
 
@@ -549,10 +550,11 @@ def get_ratios(mesh, edge_points, side):
     point_b = mesh.vs[edge_points[:, 1 - side // 2]]
     line_ab = point_b - point_a
     projection_length = np.sum(line_ab * (point_o - point_a), axis=1) / fixed_division(
-        np.linalg.norm(line_ab, ord=2, axis=1), epsilon=1e-12)
+        np.linalg.norm(line_ab, ord=2, axis=1), epsilon=eps)
     closest_point = point_a + (projection_length / edges_lengths)[:, np.newaxis] * line_ab
     d = np.linalg.norm(point_o - closest_point, ord=2, axis=1)
     return d / edges_lengths
+
 
 def fixed_division(to_div, epsilon):
     if epsilon == 0:
