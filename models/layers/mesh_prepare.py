@@ -446,6 +446,7 @@ def extract_features(mesh):
             print(e)
             raise ValueError(mesh.filename, 'bad features')
 
+###### Features functions #############
 
 def dihedral_angle(mesh, edge_points):
     normals_a = get_normals(mesh, edge_points, 0)
@@ -480,6 +481,7 @@ def symmetric_ratios(mesh, edge_points):
     ratios = np.concatenate((np.expand_dims(ratios_a, 0), np.expand_dims(ratios_b, 0)), axis=0)
     return np.sort(ratios, axis=0)
 
+############### Utils for building blocks of features ##########################
 
 def get_edge_points(mesh):
     """ returns: edge_points (#E x 4) tensor, with four vertex ids per edge
@@ -522,9 +524,8 @@ def get_side_points(mesh, edge_id):
         third_vertex = 1
     return [edge_a[first_vertex], edge_a[1 - first_vertex], edge_b[second_vertex], edge_d[third_vertex]]
 
-eps = 1e-12
-
-
+# Hint
+eps = 1e-2
 
 def get_normals(mesh, edge_points, side):
     edge_a = mesh.vs[edge_points[:, side // 2 + 2]] - mesh.vs[edge_points[:, side // 2]]
@@ -542,7 +543,6 @@ def get_opposite_angles(mesh, edge_points, side):
     edges_b /= fixed_division(np.linalg.norm(edges_b, ord=2, axis=1), epsilon=eps)[:, np.newaxis]
     dot = np.sum(edges_a * edges_b, axis=1).clip(-1, 1)
     return np.arccos(dot)
-
 
 def get_ratios(mesh, edge_points, side):
     edges_lengths = np.linalg.norm(mesh.vs[edge_points[:, side // 2]] - mesh.vs[edge_points[:, 1 - side // 2]],
